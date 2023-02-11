@@ -1,0 +1,21 @@
+.element__card{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 282px;
+    height: 361px;
+    align-self: center;
+    position: relative;
+    margin-right: 17px;
+}
+
+.element__card:nth-child(3n){
+    margin-right: 0;
+}
+
+@media screen and (max-width: 920px){
+    .element__card{
+        margin-right: 0;
+    }
+}
+

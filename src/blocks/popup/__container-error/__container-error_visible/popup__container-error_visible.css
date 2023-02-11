@@ -1,0 +1,6 @@
+.popup__container-error_visible{
+    color: rgba(255, 0, 0, 1);
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-weight: normal;
+    font-size: 12px;
+}

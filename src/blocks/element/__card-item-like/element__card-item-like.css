@@ -1,0 +1,17 @@
+.element__card-item-like{
+    background-image: url(../../../images/Group.svg);
+    width: 22px;
+    height: 19px;
+    padding: 0;
+    color: inherit;
+    border: none;
+    font: inherit;
+    background-color: transparent;
+    cursor: pointer;
+    margin-bottom: 3px;
+}
+
+.element__card-item-like:hover{
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}

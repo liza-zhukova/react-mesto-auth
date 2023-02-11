@@ -1,0 +1,23 @@
+.popup{
+    margin: 0;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-content: center;
+    background: rgba(0,0,0, 0.5);
+    z-index: 1;
+    top: 0;
+    right: 0;
+    transition: visibility 0.3s, opacity 0.3s linear;
+}
+
+@media screen and (max-width: 920px){
+    .popup{
+        flex-direction: column-reverse;
+    }
+}
+

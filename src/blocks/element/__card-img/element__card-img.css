@@ -1,0 +1,13 @@
+.element__card-img{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    height: 282px;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.element__card-img:hover{
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
