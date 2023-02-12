@@ -1,7 +1,8 @@
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import { useState, useEffect, Route, Switch, BrowserRoute} from "react";
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
@@ -20,7 +21,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  const [loggedIn, setLogedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     api
@@ -52,6 +53,10 @@ function App() {
   function handleCardClick(card) {
     setIsImagePopupOpen(true);
     setSelectedCard(card);
+  }
+
+  function handleLogin(){
+    setLoggedIn(true);
   }
 
   function closeAllPopups() {
@@ -113,28 +118,18 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleLogin(){
-    setLogedIn(true);
-  }
-
   return (
-    <BrowserRoute>
 
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
 
           <Header />
-
-          <Switch>
-            <Route path='/sign-in'>
-            <Login handleLogin={handleLogin}></Login>
-            </Route>
-            <Route path='/sign-up'>
-              <Register></Register>
-            </Route>
-            <ProtectedRoute>
+          <Routes>
+            <Route path='/sign-in' element={<Login handleLogin={handleLogin}/>}/>
+            <Route path='/sign-up' element={<Register/>}/>
+            <Route element={<ProtectedRoute> element={
+            <Main
             loggedIn={loggedIn}
-            Component={Main}
             path={'/'}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -142,9 +137,9 @@ function App() {
             onCardClick={handleCardClick}
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          </ProtectedRoute>
-          </Switch>
+            onCardDelete={handleCardDelete}/>}
+          </ProtectedRoute>}/>
+          </Routes>
 
           <Footer />
 
@@ -173,8 +168,6 @@ function App() {
           ></ImagePopup>
         </div>
       </CurrentUserContext.Provider>
-
-    </BrowserRoute>
   );
 }
 
