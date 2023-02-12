@@ -1,0 +1,13 @@
+.header__button{
+    background-color: #000;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-weight: normal;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+    padding-top: 15px;
+}

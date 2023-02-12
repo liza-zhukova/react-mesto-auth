@@ -18,6 +18,7 @@ function Login(handleLogin) {
       [name]: value
     });
   }
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!data.password || !data.email){
@@ -28,7 +29,7 @@ function Login(handleLogin) {
   if (data.jwt){
     setData({password:'', email:''});
     handleLogin();
-    navigate('/', {replace: true});
+    navigate('/home', {replace: true});
   }
  }) 
   }
@@ -38,10 +39,10 @@ function Login(handleLogin) {
     <h2 className='auth__title'>Вход</h2>
     <form className='auth__form' onSubmit={handleSubmit}>
         <label className='auth__label'>
-            <input className='auth__input' onChange={handleChange} value={data.email || ''} ></input>
+            <input className='auth__input' onChange={handleChange} value={data.email || ''} placeholder='Email'></input>
         </label>
         <label className='auth__label'>
-            <input className='auth__input' type='password' onChange={handleChange} value={data.password || ''} ></input>
+            <input className='auth__input' type='password' onChange={handleChange} value={data.password || ''} placeholder='Пароль'></input>
         </label>
         <button className='auth__button' type='submit'>Войти</button>
     </form>

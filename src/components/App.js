@@ -2,7 +2,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
@@ -12,6 +12,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
+import * as auth from "../utils/auth";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -22,6 +23,22 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const IsProfile = location.pathname.includes('/home');
+
+  useEffect(() =>{
+    const jwt = localStorage.getItem('jwt');
+    {jwt ?
+      auth.toCheck(jwt)
+      .then(()=>{
+        handleLogin();
+        navigate('/home', {replace: true})
+      })
+    :
+    navigate('/sign-up', {replace: true})
+    }
+  }, []);
 
   useEffect(() => {
     api
@@ -130,7 +147,7 @@ function App() {
             <Route element={<ProtectedRoute> element={
             <Main
             loggedIn={loggedIn}
-            path={'/'}
+            path={'/home'}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
@@ -140,8 +157,6 @@ function App() {
             onCardDelete={handleCardDelete}/>}
           </ProtectedRoute>}/>
           </Routes>
-
-          <Footer />
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
@@ -166,6 +181,7 @@ function App() {
             onClose={closeAllPopups}
             card={selectedCard}
           ></ImagePopup>
+          {IsProfile && <Footer />}
         </div>
       </CurrentUserContext.Provider>
   );

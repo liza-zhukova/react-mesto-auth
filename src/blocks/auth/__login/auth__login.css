@@ -1,0 +1,10 @@
+.auth__login{
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    color:#FFFFFF;
+    border: none;
+    margin-top: 15px;
+    text-decoration: none;
+    text-align: center;
+}

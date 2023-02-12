@@ -44,3 +44,12 @@
 @import url(./blocks/popup/__container-field/popup__container-field.css);
 @import url(./blocks/profile/__avatar-container/profile__avatar-container.css);
 @import url(./blocks/profile/__avatar-edit/profile__avatar-edit.css);
+@import url(./blocks/auth/auth.css);
+@import url(./blocks/auth/__title/auth__title.css);
+@import url(./blocks/auth/__form/auth__form.css);
+@import url(./blocks/auth/__label/auth__label.css);
+@import url(./blocks/auth/__input/auth__input.css);
+@import url(./blocks/auth/__button/auth__button.css);
+@import url(./blocks/auth/__login/auth__login.css);
+@import url(./blocks/header/__button/header__button.css);
+@import url(./blocks/header/__container/header__container.css);
