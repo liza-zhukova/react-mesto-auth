@@ -1,6 +1,6 @@
-export const BASE_URL = 'https://api.nomoreparties.co';
+export const BASE_URL = 'https://auth.nomoreparties.co';
 
-   function getResponse (res){
+   const getResponse = (res) =>{
       if (res.ok) {
           return res.json()
       } return Promise.reject(`Ошибка ${res.status}`)
@@ -13,11 +13,11 @@ export const BASE_URL = 'https://api.nomoreparties.co';
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          password: password,
-          email: email,
-        }),
+          password,
+          email
+        })
       })
-      .then(getResponse);
+      .then(getResponse)
     }
 
     export const authorize = (password, email) =>{
@@ -27,29 +27,20 @@ export const BASE_URL = 'https://api.nomoreparties.co';
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          password: password,
-          email: email,
+          password,
+          email
         })
       })
-      .then((data) => {
-        if (data.user){
-          localStorage.setItem('jwt', data.jwt);
-          return data;
-        }
-      })
-      .then(getResponse);
+      .then(getResponse)
     }
   
-    export const toCheck = (token) =>{
+    export const checkToken = (token) =>{
       return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization : `Bearer ${token}`
         },
       })
-      .then(getResponse);
+      .then(getResponse)
     }
-
-    

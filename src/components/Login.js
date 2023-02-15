@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import * as auth from '../utils/auth.js';
+import { useNavigate } from 'react-router-dom';
 
-function Login(handleLogin) {
+function Login({handleLogin}) {
+
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     password: '',
     email: ''
   })
-
- const navigate = useNavigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -21,33 +22,30 @@ function Login(handleLogin) {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!data.password || !data.email){
-      return;
-    }
     auth.authorize(data.password, data.email)
-      .then((data) => {
-  if (data.jwt){
-    setData({password:'', email:''});
-    handleLogin();
-    navigate('/home', {replace: true});
-  }
- }) 
-  }
+    .then((data) =>{
+      if(data.token){
+      handleLogin();
+      localStorage.setItem('jwt', data.token)
+      navigate('/');
+      }
+    })
+    .catch(err => console.log(err));
+};
 
   return(
     <div className='auth'>
     <h2 className='auth__title'>Вход</h2>
     <form className='auth__form' onSubmit={handleSubmit}>
         <label className='auth__label'>
-            <input className='auth__input' onChange={handleChange} value={data.email || ''} placeholder='Email'></input>
+            <input className='auth__input' type='email' name='email' onChange={handleChange} value={data.email || ''} placeholder='Email'></input>
         </label>
         <label className='auth__label'>
-            <input className='auth__input' type='password' onChange={handleChange} value={data.password || ''} placeholder='Пароль'></input>
+            <input className='auth__input' type='password' name='password' onChange={handleChange} value={data.password || ''} placeholder='Пароль'></input>
         </label>
         <button className='auth__button' type='submit'>Войти</button>
     </form>
 </div>
   )
-}
-
+  }
 export default Login;

@@ -11,3 +11,11 @@
     align-self: flex-start;
     padding-top: 15px;
 }
+
+@media screen and (max-width: 920px){
+    .header__button{
+        padding-top: 10px;
+        max-width: 320px;
+        font-size: 14px;
+    }
+}

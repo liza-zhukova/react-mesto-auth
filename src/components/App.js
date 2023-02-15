@@ -2,7 +2,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
@@ -24,21 +24,20 @@ function App() {
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const IsProfile = location.pathname.includes('/home');
 
   useEffect(() =>{
     const jwt = localStorage.getItem('jwt');
-    {jwt ?
-      auth.toCheck(jwt)
-      .then(()=>{
-        handleLogin();
-        navigate('/home', {replace: true})
+    if (jwt){
+      auth.checkToken(jwt)
+      .then((data) =>{
+        if (data){
+          handleLogin();
+          navigate('/')
+        }
       })
-    :
-    navigate('/sign-up', {replace: true})
+      .catch(err => console.log(err))
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     api
@@ -143,19 +142,17 @@ function App() {
           <Header />
           <Routes>
             <Route path='/sign-in' element={<Login handleLogin={handleLogin}/>}/>
-            <Route path='/sign-up' element={<Register/>}/>
-            <Route element={<ProtectedRoute> element={
-            <Main
+            <Route path='/sign-up' element={<Register />}/>
+            <Route path='/' element={<ProtectedRoute
             loggedIn={loggedIn}
-            path={'/home'}
+            component={Main}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
             onCardClick={handleCardClick}
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}/>}
-          </ProtectedRoute>}/>
+            onCardDelete={handleCardDelete}/>}/>
           </Routes>
 
           <EditProfilePopup
@@ -181,10 +178,12 @@ function App() {
             onClose={closeAllPopups}
             card={selectedCard}
           ></ImagePopup>
-          {IsProfile && <Footer />}
-        </div>
-      </CurrentUserContext.Provider>
-  );
+
+          {loggedIn && <Footer />}
+      </div>    
+
+      </CurrentUserContext.Provider> 
+  )
 }
 
 export default App;
