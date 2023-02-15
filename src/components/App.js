@@ -13,6 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import * as auth from "../utils/auth";
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -23,6 +24,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isTooltip, setIsTooltip] = useState(false);
+  const [isSucces, setIsSucces] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() =>{
@@ -54,6 +57,30 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
+  function handleRegister(password, email){
+  auth.register(password, email)
+    .then(() =>{
+      handleTooltip();
+      setIsSucces(true);
+      navigate('/sign-in', {replace:true})
+    })
+    .catch(err => console.log(err));
+}
+
+function handleAuthorize(password, email){
+  auth.authorize(password, email)
+    .then((data) =>{
+      if(data.token){
+      handleLogin();
+      localStorage.setItem('jwt', data.token)
+      navigate('/');
+      }
+    })
+    .catch(err => console.log(err));
+    handleTooltip();
+    setIsSucces(false);
+}
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -75,11 +102,16 @@ function App() {
     setLoggedIn(true);
   }
 
+  function handleTooltip(){
+    setIsTooltip(true);
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsImagePopupOpen(false);
+    setIsTooltip(false);
   }
 
   function handleUpdateUser(data) {
@@ -134,15 +166,21 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function signOut(){
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    navigate('/sign-in');
+  }
+
   return (
 
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
 
-          <Header />
+        <Header isLoggedIn={loggedIn} signOut={signOut}/>
           <Routes>
-            <Route path='/sign-in' element={<Login handleLogin={handleLogin}/>}/>
-            <Route path='/sign-up' element={<Register />}/>
+            <Route path='/sign-in' element={<Login handleAuthorize={handleAuthorize}/>}/>
+            <Route path='/sign-up' element={<Register handleRegister={handleRegister}/>}/>
             <Route path='/' element={<ProtectedRoute
             loggedIn={loggedIn}
             component={Main}
@@ -178,6 +216,12 @@ function App() {
             onClose={closeAllPopups}
             card={selectedCard}
           ></ImagePopup>
+
+          <InfoTooltip
+            isOpen={isTooltip}
+            onClose={closeAllPopups}
+            isSucces={isSucces}>
+          </InfoTooltip>
 
           {loggedIn && <Footer />}
       </div>    

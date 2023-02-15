@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
-import * as auth from '../utils/auth.js';
-import { useNavigate } from 'react-router-dom';
 
-function Login({handleLogin}) {
-
-  const navigate = useNavigate();
+function Login({handleAuthorize}) {
 
   const [data, setData] = useState({
     password: '',
@@ -22,16 +18,8 @@ function Login({handleLogin}) {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    auth.authorize(data.password, data.email)
-    .then((data) =>{
-      if(data.token){
-      handleLogin();
-      localStorage.setItem('jwt', data.token)
-      navigate('/');
-      }
-    })
-    .catch(err => console.log(err));
-};
+    handleAuthorize(data.password, data.email)
+}
 
   return(
     <div className='auth'>

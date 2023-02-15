@@ -1,11 +1,7 @@
 import {useState} from 'react';
 import {Link} from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import * as auth from '../utils/auth.js';
 
-function Register() {
-
-  const navigate = useNavigate();
+function Register({handleRegister}) {
 
   const [data, setData] = useState({
     password: '',
@@ -22,10 +18,7 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    auth.register(data.password, data.email)
-    .then(() =>{
-      navigate('/sign-in', {replace:true})
-    })
+    handleRegister(data.password, data.email)
   }
 
   return (
