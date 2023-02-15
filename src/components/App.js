@@ -2,7 +2,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
@@ -26,6 +26,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isTooltip, setIsTooltip] = useState(false);
   const [isSucces, setIsSucces] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() =>{
@@ -34,6 +35,7 @@ function App() {
       auth.checkToken(jwt)
       .then((data) =>{
         if (data){
+          setUserEmail(data.data.email);
           handleLogin();
           navigate('/')
         }
@@ -76,9 +78,11 @@ function handleAuthorize(password, email){
       navigate('/');
       }
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+    console.log(err);
     handleTooltip();
     setIsSucces(false);
+    })
 }
 
   function handleEditProfileClick() {
@@ -177,7 +181,7 @@ function handleAuthorize(password, email){
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
 
-        <Header isLoggedIn={loggedIn} signOut={signOut}/>
+        <Header isLoggedIn={loggedIn} signOut={signOut} userEmail={userEmail}/>
           <Routes>
             <Route path='/sign-in' element={<Login handleAuthorize={handleAuthorize}/>}/>
             <Route path='/sign-up' element={<Register handleRegister={handleRegister}/>}/>
@@ -191,6 +195,7 @@ function handleAuthorize(password, email){
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}/>}/>
+            <Route path='*' element={<Navigate to='/sign-in' />} />
           </Routes>
 
           <EditProfilePopup

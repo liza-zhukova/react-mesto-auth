@@ -1,4 +1,4 @@
-.header__button{
+.header__email{
     background-color: #000;
     font-family: 'Inter', 'Arial', sans-serif;
     font-weight: normal;
@@ -7,20 +7,14 @@
     text-align: center;
     outline: none;
     border: none;
-    cursor: pointer;
     align-self: flex-start;
-    padding-top: 18px;
+    margin-right: 24px;
 }
 
 @media screen and (max-width: 920px){
-    .header__button{
-        padding-top: 14px;
+    .header__email{
+        margin-right: 10px;
         max-width: 320px;
         font-size: 14px;
     }
-}
-
-.header__button:hover{
-    opacity: 0.6;
-    transition: opacity 0.3s;
 }
