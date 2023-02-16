@@ -1,7 +1,7 @@
 import PopupWithForm from "./PopupWithForm";
 import { useState, useEffect } from "react";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
   const [cardName, setCardName] = useState("");
   const [cardLink, setCardLink] = useState("");
 
@@ -64,6 +64,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         />
         <span className="link-input-error popup__container-error"></span>
       </label>
+      <button type="submit" className="popup__container-button">
+          {isLoading ? "Создание..." : "Создать"}
+      </button>
     </PopupWithForm>
   );
 }

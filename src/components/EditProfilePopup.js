@@ -2,7 +2,7 @@ import PopupWithForm from "./PopupWithForm";
 import { useState, useEffect, useContext } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -68,6 +68,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         />
         <span className="opinion-input-error popup__container-error"></span>
       </label>
+      <button type="submit" className="popup__container-button">
+          {isLoading ? "Сохранение..." : "Сохранить"}
+      </button>
     </PopupWithForm>
   );
 }
