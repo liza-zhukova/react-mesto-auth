@@ -36,7 +36,7 @@ function App() {
   isImagePopupOpen;
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth
         .checkToken(jwt)
@@ -55,7 +55,7 @@ function App() {
     api
       .getProfileInfo()
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data)
       })
       .catch((err) => console.log(err));
     api
@@ -149,7 +149,7 @@ function App() {
     api
       .editProfile(data)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err))
